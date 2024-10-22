@@ -1,120 +1,121 @@
 # version-update-workflow-sample
-このプロジェクトは、Pythonパッケージのバージョンを更新するためのGitHub Actionsのサンプルワークフローです。uvを使用することを前提としています。主な機能は以下の通りです。
-- lint、format、testの実行
-- Gitタグを用いたバージョン更新
-- PyPIおよびTestPyPIへの公開
+This project is a sample workflow for updating Python package versions using GitHub Actions. It assumes the use of uv. The main features are as follows:
+- Execution of lint, format, and test
+- Version updates using Git tags
+- Publishing to PyPI and TestPyPI
 
-#### English | 日本語
+#### [English](https://github.com/jiroshimaya/version-update-workflow-sample/blob/main/README.md) | [日本語](https://github.com/jiroshimaya/version-update-workflow-sample/blob/main/README.ja.md)
 
-# モチベーション
+# Motivation
 
-このプロジェクトのモチベーションは、バージョン管理を一元化し、GitHubとPyPIの状態を自然に同期させることです。
+The motivation for this project is to centralize version management and naturally synchronize the states of GitHub and PyPI.
 
-通常、uvを使ってPythonパッケージを作成する際のバージョンアップ手順は以下の通りです：
-- `pyproject.toml` の `project.version` を手動で更新
-- `uv build && uv publish` を実行（バージョンは `pyproject.toml` に基づいて決定）
+Typically, when creating a Python package using uv, the version upgrade procedure is as follows:
+- Manually update `project.version` in `pyproject.toml`
+- Execute `uv build && uv publish` (the version is determined based on `pyproject.toml`)
 
-GitHubでソースコードを管理する場合、さらに以下の作業が必要です：
-- 更新内容をGitHubに反映
-- 最新バージョンに対応するGitタグを追加
+When managing source code on GitHub, the following additional tasks are required:
+- Reflect the updates on GitHub
+- Add a Git tag corresponding to the latest version
 
-これらの手順には以下の課題があります：
-- バージョンがGitのタグと `pyproject.toml` で二重管理される
-- プルリクエスト時に `pyproject.toml` の更新を忘れることがある。忘れると、バージョン更新のためだけのコミットやプルリクエストが必要になる
-- GitHubへのプッシュとPyPIへの公開が別々に行われるため、GitHubとPyPIを同じ状態に保つには注意が必要
+These procedures have the following challenges:
+- Versions are managed in both Git tags and `pyproject.toml`
+- There is a possibility of forgetting to update `pyproject.toml` during a pull request. If forgotten, a commit or pull request solely for version updates becomes necessary
+- Since pushing to GitHub and publishing to PyPI are done separately, care is needed to keep GitHub and PyPI in the same state
 
-これらの課題を解決するために、以下を目指しました：
-- バージョン情報をGitタグで一元管理
-- GitHub Actionsでバージョン更新、ビルド、公開を同時に実行
+To solve these challenges, we aimed for the following:
+- Centralize version information management with Git tags
+- Simultaneously execute version updates, builds, and publishing with GitHub Actions
 
-これにより、`pyproject.toml` とGitタグのバージョンの二重管理を避けることができます。また、GitHub Actionsを通じてPyPIを更新することで、GitHubとPyPIの状態を意識せずに一致させることができ、開発の効率化につながると考えました。
+This approach avoids the dual management of versions in `pyproject.toml` and Git tags. Additionally, by updating PyPI through GitHub Actions, it is possible to keep GitHub and PyPI in sync without conscious effort, leading to improved development efficiency.
 
-# 利用ツール
+# Tools Used
 
-- **パッケージ管理**: uv
-- **Lintツール**: ruff, mypy
-- **フォーマットツール**: ruff
-- **テストツール**: pytest, bats, act
-- **タスク管理**: taskipy
-- **ビルドツール**: hatchling, hatch-vcs
+- **Package Management**: uv
+- **Lint Tools**: ruff, mypy
+- **Format Tools**: ruff
+- **Test Tools**: pytest, bats, act
+- **Task Management**: taskipy
+- **Build Tools**: hatchling, hatch-vcs
 
-# 使い方
+# Usage
 
-## GitHub Actionsでの実行
+## Execution with GitHub Actions
 
-### 準備
-1. `.github`ディレクトリとその中身をリポジトリにアップロードします。
-2. GitHubのSecretsに`TEST_PYPI_TOKEN`と`PYPI_TOKEN`を登録します。
+### Preparation
+1. Upload the `.github` directory and its contents to the repository.
+2. Register `TEST_PYPI_TOKEN` and `PYPI_TOKEN` in GitHub Secrets.
 
 ### `python-check.yaml`
-- `.py`ファイルに対して、LintとFormatを実施します。
-- `main`ブランチへのプルリクエストをトリガーとします。
+- Perform Lint and Format on `.py` files.
+- Trigger on pull requests to the `main` branch.
 
 ### `publish-to-testpypi.yaml`
-- バージョン更新とTestPyPIへの公開を行います。
-- GitHub Actionsから手動で実行します。
-- 実行時に以下のオプションを指定できます（すべて任意）:
-  - **バージョン番号**: `v`で始まるセマンティックバージョニング形式の番号。空欄の場合、`v`で始まる最新のタグが使用されます。
-  - **Recreate Tag**: チェックすると、指定されたバージョン番号が既に存在する場合、タグを作り直します。
-  - **Dry Run**: チェックすると、リモートへのタグのプッシュやTestPyPIへの公開など、Workflow外に影響を残す処理を行いません。
+- Performs version updates and publishes to TestPyPI.
+- Manually executed from GitHub Actions.
+- The following options can be specified at execution (all optional):
+  - **Version Number**: A semantic versioning format number starting with `v`. If left blank, the latest tag starting with `v` is used.
+  - **Recreate Tag**: If checked, the tag is recreated if the specified version number already exists.
+  - **Dry Run**: If checked, operations that affect outside the Workflow, such as pushing tags to remote and publishing to TestPyPI, are not performed.
 
 ### publish-to-pypi.yaml
-このファイルは、バージョンを更新し、PyPIにパッケージを公開するためのものです。  
-実行方法や指定可能なオプションは、`publish-to-testpypi.yaml`と同じです。
+This file is for updating the version and publishing the package to PyPI.  
+The execution method and options that can be specified are the same as `publish-to-testpypi.yaml`.
 
-## ローカルでの実行
-### 環境構築
-以下はM1 macOSでの手順です。他のOSを使用している場合は、適宜読み替えてください。
+## Local Execution
+### Environment Setup
+The following is the procedure for M1 macOS. If you are using another OS, please adjust accordingly.
 
 #### [uv](https://github.com/astral-sh/uv)
 ```sh
-# uvのインストール
+# Installation of uv
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-#### dockerまたは[docker desktop](https://www.docker.com/ja-jp/products/docker-desktop/)
-actを実行するために必要です。商用利用する際は、利用規約に注意してください。
+#### docker or [docker desktop](https://www.docker.com/ja-jp/products/docker-desktop/)
+It is necessary to run act. Please be aware of the terms of use when using it commercially.
 
 #### [act](https://github.com/nektos/act)
-このツールは、ローカル環境でGitHub Actionsを実行するために使用します。  
-Dockerコンテナ内でアクションを実行し、コンテナのサイズは3種類から選べます。ここではMediumサイズを選択します。
+This tool is used to execute GitHub Actions in a local environment.  
+Actions are executed within a Docker container, and you can choose from three container sizes. Here, the Medium size is selected.
 
 ``` 
 brew install act
 act --container-architecture linux/amd64
-# コンテナのサイズを聞かれたらMediumを選択
+# When asked for the container size, select Medium
 ```
 
 #### [bats](https://github.com/bats-core/bats-core)
-bashのテストツールです。
+It is a testing tool for bash.
 
 ```
-# batsのインストール。ローカルでシェルのテストをしたい場合のみ必要
+# Installation of bats. Only necessary if you want to test shell scripts locally.
 brew install bats
 ```
 
-### 単体実行
+### Standalone Execution
 
-#### テスト
+#### Test
 
-uv経由でpytestを実行できます。
+You can run pytest via uv.
 
 ```sh
 uv run task test
 ```
 
 #### update_version.sh
-workflowでのバージョン更新に用いるシェルスクリプトです。
+This is a shell script used for version updates in the workflow.
 
 ```sh
 sh .github/scripts/update_version.sh [-v version] [-i increment_type] [-n] [-d]
 ```
 
-詳細は別記事に譲ります。
+Please see the details below.
+https://gist.github.com/jiroshimaya/5f4524ca296357e1c5347f1674217529
 
 ### workflow
 
-actでworkflowのテストを実行できます。
+You can run workflow tests with act.
 
 ```sh
 act [trigger] -j [jobname] -W [workflow yaml filepath] -e [event file path]
@@ -122,17 +123,16 @@ act [trigger] -j [jobname] -W [workflow yaml filepath] -e [event file path]
 
 #### テスト
 
-トリガーまたはjobを指定して実行します。
+Specify a trigger or job to execute.
 ```sh
-# triggerとしてpull_requestを指定
+# Specify pull_request as the trigger
 act pull_request -W .github/workflows/python-check.yaml
-# jobを指定
+# Specify the job
 act -j test -W .github/workflows/python-check.yaml
 ```
 
 #### publish
-原則dry-runで実行します。testで本当にpublishされると管理がぐちゃぐちゃになるためです。
-workflow_dispatchがトリガーとなるジョブの場合は、eventファイルで入力を指定します。
+It is recommended to execute in dry-run mode. If it is actually published during testing, management becomes complicated. If the job is triggered by workflow_dispatch, specify the necessary inputs in the event file.
 
 ```json:tests/workflow/event.json
 {"inputs": {"version": "", "recreate": "true", "dry_run": "true"}}
@@ -142,9 +142,9 @@ workflow_dispatchがトリガーとなるジョブの場合は、eventファイ�
 act -j publish -W .github/workflows/publish-to-testpypi.yaml -e tests/workflow/event.json
 ```
 
-複数のeventに対してテストしたい場合はスクリプトを使用してください。
+If you want to test against multiple events, please use a script.
 
 ```sh
-uv run task test-workflow # batsで実行
-uv run task test-workflow-py # pytestで実行
+uv run task test-workflow # Execute with bats
+uv run task test-workflow-py # Execute with pytest
 ```

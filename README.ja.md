@@ -4,6 +4,8 @@
 - Gitタグを用いたバージョン更新
 - PyPIおよびTestPyPIへの公開
 
+#### [English](https://github.com/jiroshimaya/version-update-workflow-sample/blob/main/README.md) | [日本語](https://github.com/jiroshimaya/version-update-workflow-sample/blob/main/README.ja.md)
+
 # モチベーション
 
 このプロジェクトのモチベーションは、バージョン管理を一元化し、GitHubとPyPIの状態を自然に同期させることです。
@@ -108,7 +110,8 @@ workflowでのバージョン更新に用いるシェルスクリプトです。
 sh .github/scripts/update_version.sh [-v version] [-i increment_type] [-n] [-d]
 ```
 
-詳細は別記事に譲ります。
+詳細は以下を御覧ください。
+https://gist.github.com/jiroshimaya/5f4524ca296357e1c5347f1674217529
 
 ### workflow
 
@@ -129,8 +132,8 @@ act -j test -W .github/workflows/python-check.yaml
 ```
 
 #### publish
-原則dry-runで実行します。testで本当にpublishされると管理がぐちゃぐちゃになるためです。
-workflow_dispatchがトリガーとなるジョブの場合は、eventファイルで入力を指定します。
+原則として、dry-runで実行してください。テスト中に実際にpublishされると、管理が複雑になるためです。
+workflow_dispatchがトリガーとなるジョブの場合は、eventファイルで必要な入力を指定します。
 
 ```json:tests/workflow/event.json
 {"inputs": {"version": "", "recreate": "true", "dry_run": "true"}}
