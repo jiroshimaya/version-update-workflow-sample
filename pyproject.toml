@@ -1,0 +1,38 @@
+[project]
+name = "version-update-workflow-sample"
+dynamic = ["version"]
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+urls = { "Homepage" = "https://github.com/jiroshimaya/version-update-workflow-sample" }
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.pytest.ini_options]
+addopts = "-m 'not workflow'"
+markers = [
+    "workflow: Marker indicating tests related to github actions workflows",
+]
+
+[tool.taskipy.tasks]
+test-workflow-py = "pytest -m 'workflow' --override-ini=addopts="
+test-workflow = "bats tests/workflow/test_workflow.bats"
+act-sample = "act -j publish -W .github/workflows/publish-to-testpypi.yaml -e tests/workflow/event.json"
+test = "pytest"
+lint = "uvx ruff check . && uvx mypy ."
+format = "uvx ruff format ."
+
+[tool.mypy]
+# スタブが無いパッケージのエラーは無視させる.サードパーティのライブラリに型情報がないケースもあるため
+ignore_missing_imports = true
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=8.3.3",
+    "taskipy>=1.13.0",
+]
