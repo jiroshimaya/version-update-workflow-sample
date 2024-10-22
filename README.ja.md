@@ -45,6 +45,7 @@ GitHubでソースコードを管理する場合、さらに以下の作業が�
 ### 準備
 1. `.github`ディレクトリとその中身をリポジトリにアップロードします。
 2. GitHubのSecretsに`TEST_PYPI_TOKEN`と`PYPI_TOKEN`を登録します。
+3. GitHub > Setting > Actions > General > Workflow Permissionでread and write permissionsを選択
 
 ### `python-check.yaml`
 - `.py`ファイルに対して、LintとFormatを実施します。
