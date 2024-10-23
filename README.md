@@ -45,6 +45,7 @@ This approach avoids the dual management of versions in `pyproject.toml` and Git
 ### Preparation
 1. Upload the `.github` directory and its contents to the repository.
 2. Register `TEST_PYPI_TOKEN` and `PYPI_TOKEN` in GitHub Secrets.
+3. Select `read and write permissions` in GitHub > Settings > Actions > General > Workflow Permissions
 
 ### `python-check.yaml`
 - Perform Lint and Format on `.py` files.
@@ -61,6 +62,9 @@ This approach avoids the dual management of versions in `pyproject.toml` and Git
 ### publish-to-pypi.yaml
 This file is for updating the version and publishing the package to PyPI.  
 The execution method and options that can be specified are the same as `publish-to-testpypi.yaml`.
+
+### update-version.yaml
+- This is a workflow for updating versions. It pushes the specified tag to GitHub. It is the same as publish-to-testpypi.yaml but without the publish process.
 
 ## Local Execution
 ### Environment Setup
