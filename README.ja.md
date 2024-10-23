@@ -47,11 +47,11 @@ GitHubでソースコードを管理する場合、さらに以下の作業が�
 2. GitHubのSecretsに`TEST_PYPI_TOKEN`と`PYPI_TOKEN`を登録します。
 3. GitHub > Setting > Actions > General > Workflow Permissionでread and write permissionsを選択
 
-### `python-check.yaml`
+### python-check.yaml
 - `.py`ファイルに対して、LintとFormatを実施します。
 - `main`ブランチへのプルリクエストをトリガーとします。
 
-### `publish-to-testpypi.yaml`
+### publish-to-testpypi.yaml
 - バージョン更新とTestPyPIへの公開を行います。
 - GitHub Actionsから手動で実行します。
 - 実行時に以下のオプションを指定できます（すべて任意）:
@@ -62,6 +62,9 @@ GitHubでソースコードを管理する場合、さらに以下の作業が�
 ### publish-to-pypi.yaml
 このファイルは、バージョンを更新し、PyPIにパッケージを公開するためのものです。  
 実行方法や指定可能なオプションは、`publish-to-testpypi.yaml`と同じです。
+
+### update-version.yaml
+- このワークフローは、バージョンを更新するためのものです。GitHubに指定したタグをプッシュします。これは、publish-to-testpypi.yamlからTestPYPIへの公開処理を除いたものです。
 
 ## ローカルでの実行
 ### 環境構築
