@@ -1,0 +1,37 @@
+name: Update Version
+
+on:
+  workflow_dispatch:
+    inputs:
+      increment_type:
+        description: Version increment type
+        required: true
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+      dry_run:
+        description: Dry Run
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Update Version
+      if: ${{ inputs.increment_type != '' }}
+      run: |
+        args=""
+        if [ -n "${{ inputs.increment_type }}" ]; then
+          args="$args -i ${{ inputs.increment_type }}"
+        fi
+        if [ "${{ inputs.dry_run }}" = "true" ]; then
+          args="$args -n"
+        fi
+        bash .github/scripts/update_version.sh $args
