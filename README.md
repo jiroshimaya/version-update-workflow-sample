@@ -5,6 +5,8 @@
 - PyPIおよびTestPyPIへの公開
 - sphinxによるdocsの作成とgithub pagesでの公開
 
+本リポジトリはテンプレート化されているため新規リポジトリ作成時のテンプレートにできます。
+
 #### [English](https://github.com/jiroshimaya/version-update-workflow-sample/blob/main/README.en.md) | [日本語](https://github.com/jiroshimaya/version-update-workflow-sample/blob/main/README.md)
 
 # モチベーション
