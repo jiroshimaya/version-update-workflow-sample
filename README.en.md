@@ -3,6 +3,7 @@ This project is a sample workflow for updating Python package versions using Git
 - Execution of lint, format, and test
 - Version updates using Git tags
 - Publishing to PyPI and TestPyPI
+- Documentation generation with sphinx and deployment to GitHub Pages
 
 #### [English](https://github.com/jiroshimaya/version-update-workflow-sample/blob/main/README.md) | [日本語](https://github.com/jiroshimaya/version-update-workflow-sample/blob/main/README.ja.md)
 
@@ -37,15 +38,27 @@ This approach avoids the dual management of versions in `pyproject.toml` and Git
 - **Test Tools**: pytest, bats, act
 - **Task Management**: taskipy
 - **Build Tools**: hatchling, hatch-vcs
+- **Documentation Tools**: sphinx
 
 # Usage
 
 ## Execution with GitHub Actions
 
 ### Preparation
+The following steps are required for basic setup. Additional steps are needed depending on which features you want to use.
+
+#### Common
 1. Upload the `.github` directory and its contents to the repository.
-2. Register `TEST_PYPI_TOKEN` and `PYPI_TOKEN` in GitHub Secrets.
-3. Select `read and write permissions` in GitHub > Settings > Actions > General > Workflow Permissions
+2. Select `read and write permissions` in GitHub > Settings > Actions > General > Workflow Permissions
+
+#### PyPI
+- Register `TEST_PYPI_TOKEN` and `PYPI_TOKEN` in GitHub Secrets.
+
+#### Documentation
+- Set Source to "GitHub Actions" in GitHub > Settings > Pages
+- Update the src/MYPKG line in pyproject.toml > tool.taskipy.tasks > docs-generate with the appropriate folder name
+- Add project description in docs/source/index.rst
+- Verify documentation generation with `uv run task docs-generate && uv run task docs-open`
 
 ### `python-check.yaml`
 - Perform Lint and Format on `.py` files.
@@ -66,6 +79,10 @@ The execution method and options that can be specified are the same as `publish-
 ### update-version.yaml
 - This is a workflow for updating versions. It pushes the specified tag to GitHub. It is the same as publish-to-testpypi.yaml but without the publish process.
 
+### docs.yaml
+- Automatically generates documentation pages using sphinx and deploys them to GitHub Pages.
+- By default, it runs when a semantic versioning format tag (v*.*.*) is pushed.
+
 ## Local Execution
 ### Environment Setup
 The following is the procedure for M1 macOS. If you are using another OS, please adjust accordingly.
@@ -83,7 +100,7 @@ It is necessary to run act. Please be aware of the terms of use when using it co
 This tool is used to execute GitHub Actions in a local environment.  
 Actions are executed within a Docker container, and you can choose from three container sizes. Here, the Medium size is selected.
 
-``` 
+```
 brew install act
 act --container-architecture linux/amd64
 # When asked for the container size, select Medium
@@ -125,7 +142,7 @@ You can run workflow tests with act.
 act [trigger] -j [jobname] -W [workflow yaml filepath] -e [event file path]
 ```
 
-#### テスト
+#### Test
 
 Specify a trigger or job to execute.
 ```sh
