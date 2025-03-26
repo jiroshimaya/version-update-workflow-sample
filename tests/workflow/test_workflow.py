@@ -1,4 +1,5 @@
 import subprocess
+
 import pytest
 
 pytestmark = pytest.mark.workflow
@@ -56,10 +57,10 @@ def test_publish_to_testpypi():
     filename = ".github/workflows/publish-to-testpypi.yaml"
     for event in events:
         import json
-        import tempfile
 
         # 処理が終わったら一時ファイルを削除
         import os
+        import tempfile
 
         with tempfile.NamedTemporaryFile(
             "w", suffix=".json", delete=False
@@ -86,10 +87,10 @@ def test_publish_to_pypi():
     filename = ".github/workflows/publish-to-pypi.yaml"
     for event in events:
         import json
-        import tempfile
 
         # 処理が終わったら一時ファイルを削除
         import os
+        import tempfile
 
         with tempfile.NamedTemporaryFile(
             "w", suffix=".json", delete=False
@@ -116,6 +117,6 @@ def test_update_version_sh():
             capture_output=True,
             text=True,
         )
-        assert (
-            result.returncode == 0
-        ), f"Script failed with args: {args}\n{result.stderr}"
+        assert result.returncode == 0, (
+            f"Script failed with args: {args}\n{result.stderr}"
+        )
