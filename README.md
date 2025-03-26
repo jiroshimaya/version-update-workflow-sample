@@ -3,8 +3,9 @@
 - lint、format、testの実行
 - Gitタグを用いたバージョン更新
 - PyPIおよびTestPyPIへの公開
+- sphinxによるdocsの作成とgithub pagesでの公開
 
-#### [English](https://github.com/jiroshimaya/version-update-workflow-sample/blob/main/README.md) | [日本語](https://github.com/jiroshimaya/version-update-workflow-sample/blob/main/README.ja.md)
+#### [English](https://github.com/jiroshimaya/version-update-workflow-sample/blob/main/README.en.md) | [日本語](https://github.com/jiroshimaya/version-update-workflow-sample/blob/main/README.md)
 
 # モチベーション
 
@@ -37,15 +38,24 @@ GitHubでソースコードを管理する場合、さらに以下の作業が�
 - **テストツール**: pytest, bats, act
 - **タスク管理**: taskipy
 - **ビルドツール**: hatchling, hatch-vcs
+- **ドキュメント作成**: sphinx
 
 # 使い方
 
 ## GitHub Actionsでの実行
 
 ### 準備
-1. `.github`ディレクトリとその中身をリポジトリにアップロードします。
-2. GitHubのSecretsに`TEST_PYPI_TOKEN`と`PYPI_TOKEN`を登録します。
-3. GitHub > Setting > Actions > General > Workflow Permissionでread and write permissionsを選択
+PyPIやdocsの準備は使用する場合は実施してください。
+#### ワークフロー全般
+- `.github`ディレクトリとその中身をリポジトリにアップロード
+- GitHub > Setting > Actions > General > Workflow Permissionでread and write permissionsを選択
+
+#### PyPI
+- GitHubのSecretsに`TEST_PYPI_TOKEN`と`PYPI_TOKEN`を登録します。
+
+#### docs
+
+- GitHub > Settings > Pages で、Source を "GitHub Actions" に設定
 
 ### python-check.yaml
 - `.py`ファイルに対して、LintとFormatを実施します。
@@ -65,6 +75,11 @@ GitHubでソースコードを管理する場合、さらに以下の作業が�
 
 ### update-version.yaml
 - このワークフローは、バージョンを更新するためのものです。GitHubに指定したタグをプッシュします。これは、publish-to-testpypi.yamlからTestPYPIへの公開処理を除いたものです。
+- update-version-simple.yamlはシンプルバージョンです。インクリメントの種類（patch, minor, major）を選ぶだけで自動でインクリメントします。
+- auto-update-version.yamlはpushによって.pyが変更されたら自動でpatchバージョンのインクリメントを実施するワークフローです。pushがPRのマージのみによって行われるのであれば、autoでもいいかと思います。
+
+### docs.yaml
+- sphinxによりドキュメントページを自動生成し、github pagesにデプロイします。
 
 ## ローカルでの実行
 ### 環境構築
