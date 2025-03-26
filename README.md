@@ -45,8 +45,9 @@ GitHubでソースコードを管理する場合、さらに以下の作業が�
 ## GitHub Actionsでの実行
 
 ### 準備
-PyPIやdocsの準備は使用する場合は実施してください。
-#### ワークフロー全般
+「共通」は原則実施してください。
+その他は対応する機能を使用する場合は実施してください。
+#### 共通
 - `.github`ディレクトリとその中身をリポジトリにアップロード
 - GitHub > Setting > Actions > General > Workflow Permissionでread and write permissionsを選択
 
@@ -54,8 +55,10 @@ PyPIやdocsの準備は使用する場合は実施してください。
 - GitHubのSecretsに`TEST_PYPI_TOKEN`と`PYPI_TOKEN`を登録します。
 
 #### docs
-
 - GitHub > Settings > Pages で、Source を "GitHub Actions" に設定
+- pyproject.toml > tool.taskipy.tasks > docs-generateの行のsrc/MYPKGをを適切なフォルダ名に書き換え
+- docs/source/index.rstのプロジェクト説明部分を記載
+- `uv run task docs-generate && uv run task docs-open`でドキュメントファイルの生成ができるか確認
 
 ### python-check.yaml
 - `.py`ファイルに対して、LintとFormatを実施します。
@@ -80,6 +83,7 @@ PyPIやdocsの準備は使用する場合は実施してください。
 
 ### docs.yaml
 - sphinxによりドキュメントページを自動生成し、github pagesにデプロイします。
+- デフォルトではセマンティックバージョン形式（v*.*.*）のタグがpushされたときに実行されます。
 
 ## ローカルでの実行
 ### 環境構築
