@@ -50,10 +50,11 @@ GitHubでソースコードを管理する場合、さらに以下の作業が�
 「共通」は原則実施してください。
 その他は対応する機能を使用する場合は実施してください。
 #### 共通
-- `.github`ディレクトリとその中身をリポジトリにアップロード
+- 新規リポジトリ作成時に、このリポジトリをテンプレートとして選択してください。
+- リポジトリのクローン後、`uv run task init`を実行して初期設定を行ってください。
 - GitHub > Setting > Actions > General > Workflow Permissionでread and write permissionsを選択
 
-#### PyPI
+#### PyPI、TestPyPI
 - GitHubのSecretsに`TEST_PYPI_TOKEN`と`PYPI_TOKEN`を登録します。
 
 #### docs
@@ -104,7 +105,7 @@ actを実行するために必要です。商用利用する際は、利用規�
 このツールは、ローカル環境でGitHub Actionsを実行するために使用します。  
 Dockerコンテナ内でアクションを実行し、コンテナのサイズは3種類から選べます。ここではMediumサイズを選択します。
 
-``` 
+```
 brew install act
 act --container-architecture linux/amd64
 # コンテナのサイズを聞かれたらMediumを選択
