@@ -31,7 +31,12 @@ if [[ -n "$version" ]]; then
     new_version=$version
 else 
     # Get the current version if not provided
-    current_version=$(git ls-remote --tags origin | awk -F'/' '{print $3}' | grep '^v' | sort -V | tail -n1)
+    current_version=$(git ls-remote --tags origin | awk -F'/' '{print $3}' | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -n1)
+
+    # タグが存在しない場合はv0.0.0を使用
+    if [[ -z "$current_version" ]]; then
+        current_version="v0.0.0"
+    fi
 
     # Remove the leading 'v'
     current_version=${current_version#v}
