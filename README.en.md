@@ -9,26 +9,22 @@ This project is a sample workflow for updating Python package versions using Git
 
 # Motivation
 
-The motivation for this project is to centralize version management and naturally synchronize the states of GitHub and PyPI.
+This project aims to simplify version management for Python packages.
 
-Typically, when creating a Python package using uv, the version upgrade procedure is as follows:
-- Manually update `project.version` in `pyproject.toml`
-- Execute `uv build && uv publish` (the version is determined based on `pyproject.toml`)
+When developing Python packages using uv, version information needs to be managed in multiple places:
 
-When managing source code on GitHub, the following additional tasks are required:
-- Reflect the updates on GitHub
-- Add a Git tag corresponding to the latest version
+- project.version in pyproject.toml
+- Git tags
+- Sphinx configuration files
 
-These procedures have the following challenges:
-- Versions are managed in both Git tags and `pyproject.toml`
-- There is a possibility of forgetting to update `pyproject.toml` during a pull request. If forgotten, a commit or pull request solely for version updates becomes necessary
-- Since pushing to GitHub and publishing to PyPI are done separately, care is needed to keep GitHub and PyPI in the same state
+Managing these separately can lead to issues like version mismatches and complicated update procedures.
 
-To solve these challenges, we aimed for the following:
-- Centralize version information management with Git tags
-- Simultaneously execute version updates, builds, and publishing with GitHub Actions
+Therefore, this project implements:
 
-This approach avoids the dual management of versions in `pyproject.toml` and Git tags. Additionally, by updating PyPI through GitHub Actions, it is possible to keep GitHub and PyPI in sync without conscious effort, leading to improved development efficiency.
+- Centralization of version information in Git tags
+- Automatic retrieval of version information from Git tags for other configuration files
+
+This approach achieves simplified version management.
 
 # Tools Used
 
