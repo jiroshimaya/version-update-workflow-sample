@@ -4,6 +4,11 @@ on:
   push:
     tags:
       - "v[0-9]+.[0-9]+.[0-9]+"  # vで始まるセマンティックバージョンのタグ
+  # Auto Update Version workflowが完了したら、docs workflowを実行する。tag pushのトリガーはgithub actionsによる場合はトリガーにならないため
+  # workflow_run:
+  #  workflows: ["Auto Update Version"]
+  #  types:
+  #    - completed
   workflow_dispatch:
 
 permissions:
