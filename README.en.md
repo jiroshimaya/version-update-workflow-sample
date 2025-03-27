@@ -48,8 +48,9 @@ This approach avoids the dual management of versions in `pyproject.toml` and Git
 The following steps are required for basic setup. Additional steps are needed depending on which features you want to use.
 
 #### Common
-1. Upload the `.github` directory and its contents to the repository.
-2. Select `read and write permissions` in GitHub > Settings > Actions > General > Workflow Permissions
+1. Select this repository as a template when creating a new repository.
+2. After cloning the repository, run `uv run task init` to perform initial setup.
+3. Select `read and write permissions` in GitHub > Settings > Actions > General > Workflow Permissions
 
 #### PyPI
 - Register `TEST_PYPI_TOKEN` and `PYPI_TOKEN` in GitHub Secrets.
