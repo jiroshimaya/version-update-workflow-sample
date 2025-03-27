@@ -25,6 +25,32 @@ def get_git_url():
         return "https://github.com/example/example"
 
 
+def rename_src_directory():
+    """src/version_update_workflow_sampleをsrc/{PROJECTNAME}にリネームする"""
+    project_name = get_project_name()
+    old_dir = "src/version_update_workflow_sample"
+    new_dir = f"src/{project_name.replace('-', '_')}"
+
+    if not os.path.exists(old_dir):
+        print(f"Warning: {old_dir} does not exist")
+        return
+
+    if os.path.exists(new_dir):
+        print(f"Warning: {new_dir} already exists")
+        return
+
+    # ディレクトリをリネーム
+    os.rename(old_dir, new_dir)
+    print(f"Renamed {old_dir} to {new_dir}")
+
+    # __init__.pyの内容を更新
+    init_file = os.path.join(new_dir, "__init__.py")
+    if os.path.exists(init_file):
+        with open(init_file, "w") as f:
+            f.write('def hello() -> str:\n    return "Hello"\n')
+        print(f"Updated {init_file}")
+
+
 def update_pyproject_toml():
     # pyproject.tomlを読み込む
     with open("pyproject.toml", "rb") as f:
@@ -55,4 +81,5 @@ def update_pyproject_toml():
 
 
 if __name__ == "__main__":
+    rename_src_directory()
     update_pyproject_toml()
