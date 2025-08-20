@@ -63,6 +63,10 @@ version = get_version()
 release = version
 language = "ja"
 
+# これがないとprojectがドキュメントに表示（置換）されない
+rst_epilog = f"""
+.. |project| replace:: {project}
+"""
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
