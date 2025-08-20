@@ -3,6 +3,7 @@
 /docs/source/*
 !/docs/source/index.rst
 !/docs/source/conf.py
+.DS_Store
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

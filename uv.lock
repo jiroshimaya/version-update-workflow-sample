@@ -551,7 +551,7 @@ wheels = [
 
 [[package]]
 name = "version-update-workflow-sample"
-version = "0.0.5.dev2+g73d89a3.d20250327"
+version = "0.0.6.dev3+gb8fc588.d20250327"
 source = { editable = "." }
 
 [package.dev-dependencies]
